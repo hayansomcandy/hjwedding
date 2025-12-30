@@ -315,6 +315,9 @@ const Admin = () => {
                     <label>예식장 이름</label>
                     <input name="locationName" value={info.locationName || ''} onChange={handleInfoChange} placeholder="예: 그랜드하우스" />
 
+                    <label>초대 문구</label>
+                    <textarea name="message" value={info.message} onChange={handleInfoChange} rows={4} style={{ width: '100%', marginBottom: '15px' }} />
+
                     <div style={{ backgroundColor: '#f0f0f0', padding: '10px', borderRadius: '4px', marginBottom: '15px' }}>
                         <label style={{ display: 'block', marginBottom: '5px' }}><strong>배경 투명도 조절</strong> ({info.mainImageOpacity || 0.6})</label>
                         <input
@@ -441,8 +444,7 @@ const Admin = () => {
                         <textarea name="trafficParking" value={info.trafficParking || ''} onChange={handleInfoChange} placeholder="주차 안내 (예: 지하 1층 ~ 6층 무료 주차)" rows={2} style={{ width: '100%' }} />
                     </div>
 
-                    <label>초대 문구</label>
-                    <textarea name="message" value={info.message} onChange={handleInfoChange} rows={4} style={{ width: '100%' }} />
+
 
                     <label style={{ marginTop: '30px', display: 'block' }}><strong>SNS 공유 설정 (카카오톡/링크)</strong></label>
                     <div style={{ backgroundColor: '#eef', padding: '10px', borderRadius: '4px', marginBottom: '10px' }}>
