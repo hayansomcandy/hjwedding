@@ -34,7 +34,9 @@ const Admin = () => {
         groomIntro: '축구를 사랑하는..\n따뜻한 남자 000입니다.',
         brideIntro: '여행을 좋아하는..\n사랑스러운 여자 000입니다.',
         groomHashtags: '#축구 #개발자 #ISFJ',
-        brideHashtags: '#여행 #디자이너 #ENFP'
+        brideHashtags: '#여행 #디자이너 #ENFP',
+        groomBirth: '1993. 02. 04.',
+        brideBirth: '1998. 01. 18.'
     });
 
     // Design State
@@ -528,6 +530,9 @@ const Admin = () => {
                                 </div>
                             </div>
 
+                            <label>생년월일 (예: 1993. 02. 04.)</label>
+                            <input name="groomBirth" value={info.groomBirth || ''} onChange={handleInfoChange} placeholder="1993. 02. 04." />
+
                             <label>해시태그 (예: #멋짐)</label>
                             <input name="groomHashtags" value={info.groomHashtags || ''} onChange={handleInfoChange} placeholder="#... #..." />
 
@@ -557,6 +562,9 @@ const Admin = () => {
                                     </label>
                                 </div>
                             </div>
+
+                            <label>생년월일 (예: 1998. 01. 18.)</label>
+                            <input name="brideBirth" value={info.brideBirth || ''} onChange={handleInfoChange} placeholder="1998. 01. 18." />
 
                             <label>해시태그 (예: #예쁨)</label>
                             <input name="brideHashtags" value={info.brideHashtags || ''} onChange={handleInfoChange} placeholder="#... #..." />
