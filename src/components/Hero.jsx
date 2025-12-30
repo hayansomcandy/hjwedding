@@ -43,17 +43,42 @@ const Hero = () => {
             )}
 
             {/* Content Overlay */}
-            <div style={{ position: 'relative', zIndex: 1, width: '100%', textAlign: 'center' }}>
-                <p style={{ fontSize: '18px', letterSpacing: '2px', marginBottom: '20px', textTransform: 'uppercase', color: '#555' }}>Wedding Invitation</p>
+            <div style={{ position: 'relative', zIndex: 1, width: '100%', textAlign: 'center', color: info.heroTextColor || '#333' }}>
+                <p style={{
+                    fontSize: '18px',
+                    letterSpacing: '2px',
+                    marginBottom: '20px',
+                    textTransform: 'uppercase',
+                    color: info.heroTextColor ? info.heroTextColor : '#555',
+                    fontFamily: info.heroFontFamily || 'inherit',
+                    opacity: 0.8
+                }}>Wedding Invitation</p>
 
-                <h1 style={{ fontSize: '32px', marginBottom: '15px', fontWeight: 'bold' }}>
-                    {info.groomName} <span style={{ fontSize: '24px', fontWeight: 'normal' }}>&</span> {info.brideName}
+                <h1 style={{
+                    fontSize: `${info.heroTitleFontSize || 32}px`,
+                    marginBottom: '15px',
+                    fontWeight: 'bold',
+                    fontFamily: info.heroFontFamily || 'inherit'
+                }}>
+                    {info.groomName} <span style={{ fontSize: `${(info.heroTitleFontSize || 32) * 0.75}px`, fontWeight: 'normal' }}>&</span> {info.brideName}
                 </h1>
 
-                <p style={{ fontSize: '18px', color: '#444', marginBottom: '40px', fontWeight: '500' }}>{info.date}</p>
+                <p style={{
+                    fontSize: `${info.heroDateFontSize || 18}px`,
+                    color: info.heroTextColor || '#444',
+                    marginBottom: '40px',
+                    fontWeight: '500',
+                    fontFamily: info.heroFontFamily || 'inherit'
+                }}>{info.date}</p>
 
                 <div style={{ marginBottom: '40px' }}>
-                    <p style={{ whiteSpace: 'pre-line', fontSize: '16px', lineHeight: '2', color: '#333' }}>{info.message}</p>
+                    <p style={{
+                        whiteSpace: 'pre-line',
+                        fontSize: `${info.heroMessageFontSize || 16}px`,
+                        lineHeight: '2',
+                        color: info.heroTextColor || '#333',
+                        fontFamily: info.heroFontFamily || 'inherit'
+                    }}>{info.message}</p>
                 </div>
 
 
