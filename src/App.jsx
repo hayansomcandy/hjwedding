@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Hero from './components/Hero';
 import Profiles from './components/Profiles';
+import Contact from './components/Contact';
 import Location from './components/Location';
 import RSVP from './components/RSVP';
 import Admin from './components/Admin';
@@ -68,6 +69,7 @@ function App() {
                 <div className="app-container">
                     <Hero />
                     <Profiles />
+                    <Contact />
                     <Gallery />
                     <Calendar />
                     <Location />

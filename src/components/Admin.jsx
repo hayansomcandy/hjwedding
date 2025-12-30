@@ -58,6 +58,18 @@ const Admin = () => {
         ]
     });
 
+    // Contacts State
+    const [contacts, setContacts] = useState({
+        groom: [
+            { relation: 'father', name: '이아버지', phone: '010-0000-0000' },
+            { relation: 'mother', name: '김어머니', phone: '010-0000-0000' }
+        ],
+        bride: [
+            { relation: 'father', name: '박아버지', phone: '010-0000-0000' },
+            { relation: 'mother', name: '최어머니', phone: '010-0000-0000' }
+        ]
+    });
+
     useEffect(() => {
         // Real-time Listeners
         const guestsRef = ref(database, 'guests');
@@ -65,6 +77,7 @@ const Admin = () => {
         const infoRef = ref(database, 'wedding_info');
         const designRef = ref(database, 'wedding_design');
         const accountsRef = ref(database, 'wedding_accounts');
+        const contactsRef = ref(database, 'wedding_contacts');
         const connectedRef = ref(database, '.info/connected');
 
         onValue(connectedRef, (snap) => {
@@ -98,6 +111,11 @@ const Admin = () => {
         onValue(accountsRef, (snapshot) => {
             const data = snapshot.val();
             if (data) setAccounts(prev => ({ ...prev, ...data }));
+        });
+
+        onValue(contactsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) setContacts(prev => ({ ...prev, ...data }));
         });
     }, []);
 
@@ -158,6 +176,33 @@ const Admin = () => {
     const saveAccounts = () => {
         set(ref(database, 'wedding_accounts'), accounts)
             .then(() => alert('계좌 정보가 저장되었습니다. (실시간 반영)'))
+            .catch(err => alert('저장 실패: ' + err.message));
+    };
+
+    // --- Contact Functions ---
+    const handleContactChange = (side, index, field, value) => {
+        const updatedSide = [...contacts[side]];
+        updatedSide[index] = { ...updatedSide[index], [field]: value };
+        setContacts({ ...contacts, [side]: updatedSide });
+    };
+
+    const addContact = (side) => {
+        if (contacts[side].length >= 4) { // Limit to 4 for UI sanity
+            alert('최대 4명까지만 등록 가능합니다.');
+            return;
+        }
+        const updatedSide = [...contacts[side], { relation: 'father', name: '', phone: '' }];
+        setContacts({ ...contacts, [side]: updatedSide });
+    };
+
+    const removeContact = (side, index) => {
+        const updatedSide = contacts[side].filter((_, i) => i !== index);
+        setContacts({ ...contacts, [side]: updatedSide });
+    };
+
+    const saveContacts = () => {
+        set(ref(database, 'wedding_contacts'), contacts)
+            .then(() => alert('연락처 정보가 저장되었습니다. (실시간 반영)'))
             .catch(err => alert('저장 실패: ' + err.message));
     };
 
