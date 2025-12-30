@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 const Hero = () => {
     const [info, setInfo] = useState({
-        groomName: '손호찬',
-        brideName: '김다혜',
+        groomName: '임진오',
+        brideName: '신하솜',
         date: '2026년 2월 8일 일요일',
         message: '"저희 두 사람, \n사랑으로 하나 되어 시작합니다."'
     });
