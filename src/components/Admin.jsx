@@ -349,9 +349,9 @@ const Admin = () => {
                             step="0.1"
                             value={info.mainImageOpacity || 0.6}
                             onChange={handleInfoChange}
-                            style={{ flex: 1 }}
+                            style={{ flex: 1, width: 'auto', margin: 0, padding: 0 }}
                         />
-                        <span>{info.mainImageOpacity || 0.6}</span>
+                        <span style={{ minWidth: '30px', textAlign: 'right' }}>{info.mainImageOpacity || 0.6}</span>
                     </div>
 
                     <label style={{ display: 'block', marginTop: '15px', color: '#555', borderBottom: '1px solid #eee', paddingBottom: '5px' }}><strong>메인 텍스트 스타일</strong></label>
