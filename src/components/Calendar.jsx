@@ -56,10 +56,12 @@ const Calendar = () => {
 
     const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
 
+    const dayName = dayNames[targetDate.getDay()];
+
     return (
         <div className="section" style={{ backgroundColor: '#fff', paddingBottom: '60px' }}>
             <h3 style={{ fontFamily: 'serif', letterSpacing: '2px', marginBottom: '30px' }}>
-                {year}. {month + 1}. {date}
+                {year}. {month + 1}. {date}({dayName})
             </h3>
 
             <div style={{
