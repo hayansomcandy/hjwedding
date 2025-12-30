@@ -25,7 +25,10 @@ const Admin = () => {
         heroTitleFontSize: 32,
         heroDateFontSize: 18,
         heroMessageFontSize: 16,
-        heroFontFamily: ''
+        heroFontFamily: '',
+        shareTitle: '임진오&신하솜의 결혼식 초대장',
+        shareDesc: '2026년 11월 21일, 소중한 분들을 초대합니다.',
+        shareImage: ''
     });
 
     // Design State
@@ -440,6 +443,46 @@ const Admin = () => {
 
                     <label>초대 문구</label>
                     <textarea name="message" value={info.message} onChange={handleInfoChange} rows={4} style={{ width: '100%' }} />
+
+                    <label style={{ marginTop: '30px', display: 'block' }}><strong>SNS 공유 설정 (카카오톡/링크)</strong></label>
+                    <div style={{ backgroundColor: '#eef', padding: '10px', borderRadius: '4px', marginBottom: '10px' }}>
+                        <p style={{ fontSize: '12px', color: '#666', marginBottom: '10px' }}>
+                            * 주의: 이곳의 설정을 변경해도, 카카오톡/네이버 서버의 <strong>캐시(기록)</strong> 때문에 바로 반영되지 않을 수 있습니다.<br />
+                            * 변경 후에는 반드시 <a href="https://developers.kakao.com/tool/clear/og" target="_blank" rel="noreferrer">카카오 초기화 도구</a>를 사용해야 합니다.
+                        </p>
+                        <label>공유 제목</label>
+                        <input name="shareTitle" value={info.shareTitle || ''} onChange={handleInfoChange} placeholder="예: 임진오&신하솜 결혼합니다" />
+
+                        <label>공유 설명</label>
+                        <input name="shareDesc" value={info.shareDesc || ''} onChange={handleInfoChange} placeholder="예: 2026년 11월 21일..." />
+
+                        <label>공유 썸네일 이미지</label>
+                        <div style={{ marginBottom: '10px' }}>
+                            {info.shareImage && <img src={info.shareImage} alt="Share Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', display: 'block', marginBottom: '5px' }} />}
+                            <div style={{ display: 'flex', gap: '5px' }}>
+                                <input
+                                    name="shareImage"
+                                    value={info.shareImage || ''}
+                                    onChange={handleInfoChange}
+                                    placeholder="이미지 주소 URL"
+                                    style={{ flex: 1, margin: 0 }}
+                                />
+                                <label className="btn" style={{ padding: '10px', margin: 0, fontSize: '14px', cursor: 'pointer', backgroundColor: '#666' }}>
+                                    파일 선택
+                                    <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => {
+                                        const file = e.target.files[0];
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onloadend = () => {
+                                                setInfo(prev => ({ ...prev, shareImage: reader.result }));
+                                            };
+                                            reader.readAsDataURL(file);
+                                        }
+                                    }} />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
 
                     <button onClick={saveInfo} className="btn btn-point" style={{ marginTop: '10px' }}>정보 저장하기</button>
                 </div>

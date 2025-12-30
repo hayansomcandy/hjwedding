@@ -32,6 +32,31 @@ function App() {
                 }
             }
         });
+
+        // Apply Global Info (Title & Meta)
+        const infoRef = ref(database, 'wedding_info');
+        onValue(infoRef, (snapshot) => {
+            const info = snapshot.val();
+            if (info) {
+                // Update Title
+                if (info.shareTitle) {
+                    document.title = info.shareTitle;
+                    // Try to update OG tags dynamically (best effort for SPA)
+                    const ogTitle = document.querySelector('meta[property="og:title"]');
+                    if (ogTitle) ogTitle.setAttribute('content', info.shareTitle);
+                }
+
+                if (info.shareDesc) {
+                    const ogDesc = document.querySelector('meta[property="og:description"]');
+                    if (ogDesc) ogDesc.setAttribute('content', info.shareDesc);
+                }
+
+                if (info.shareImage) {
+                    const ogImage = document.querySelector('meta[property="og:image"]');
+                    if (ogImage) ogImage.setAttribute('content', info.shareImage);
+                }
+            }
+        });
     }, []);
 
     return (
