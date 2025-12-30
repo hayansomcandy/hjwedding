@@ -339,8 +339,8 @@ const Admin = () => {
                         </div>
                     </div>
 
-                    <label>배경 투명도 (0.1 ~ 1.0)</label>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+                    <label>배경 투명도 ({info.mainImageOpacity || 0.6})</label>
+                    <div style={{ marginBottom: '15px' }}>
                         <input
                             type="range"
                             name="mainImageOpacity"
@@ -349,9 +349,8 @@ const Admin = () => {
                             step="0.1"
                             value={info.mainImageOpacity || 0.6}
                             onChange={handleInfoChange}
-                            style={{ flex: 1, width: 'auto', margin: 0, padding: 0 }}
+                            style={{ width: '100%', margin: '5px 0', padding: 0, display: 'block' }}
                         />
-                        <span style={{ minWidth: '30px', textAlign: 'right' }}>{info.mainImageOpacity || 0.6}</span>
                     </div>
 
                     <label style={{ display: 'block', marginTop: '15px', color: '#555', borderBottom: '1px solid #eee', paddingBottom: '5px' }}><strong>메인 텍스트 스타일</strong></label>
