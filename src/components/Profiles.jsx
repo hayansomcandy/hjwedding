@@ -36,9 +36,10 @@ const Profiles = () => {
                 {/* Groom */}
                 <div className="fade-in-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <div style={{
-                        width: '180px',
-                        height: '180px',
-                        borderRadius: '50%',
+                        width: '100%',
+                        maxWidth: '300px',
+                        aspectRatio: '1/1',
+                        borderRadius: '4px',
                         overflow: 'hidden',
                         marginBottom: '20px',
                         boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
@@ -54,6 +55,9 @@ const Profiles = () => {
                         <span style={{ fontSize: '14px', color: '#0066cc', fontWeight: 'bold', marginRight: '5px' }}>신랑</span>
                         <span style={{ fontSize: '18px', fontWeight: 'bold', color: '#333' }}>{info.groomName}</span>
                     </div>
+                    {info.groomBirth && (
+                        <p style={{ color: '#666', fontSize: '14px', marginBottom: '5px' }}>{info.groomBirth}</p>
+                    )}
                     {info.groomHashtags && (
                         <p style={{ color: '#0066cc', fontSize: '14px', marginBottom: '10px', wordBreak: 'keep-all' }}>{info.groomHashtags}</p>
                     )}
@@ -72,9 +76,10 @@ const Profiles = () => {
                 {/* Bride */}
                 <div className="fade-in-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', animationDelay: '0.2s' }}>
                     <div style={{
-                        width: '180px',
-                        height: '180px',
-                        borderRadius: '50%',
+                        width: '100%',
+                        maxWidth: '300px',
+                        aspectRatio: '1/1',
+                        borderRadius: '4px',
                         overflow: 'hidden',
                         marginBottom: '20px',
                         boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
@@ -90,6 +95,9 @@ const Profiles = () => {
                         <span style={{ fontSize: '14px', color: '#ff6699', fontWeight: 'bold', marginRight: '5px' }}>신부</span>
                         <span style={{ fontSize: '18px', fontWeight: 'bold', color: '#333' }}>{info.brideName}</span>
                     </div>
+                    {info.brideBirth && (
+                        <p style={{ color: '#666', fontSize: '14px', marginBottom: '5px' }}>{info.brideBirth}</p>
+                    )}
                     {info.brideHashtags && (
                         <p style={{ color: '#ff6699', fontSize: '14px', marginBottom: '10px', wordBreak: 'keep-all' }}>{info.brideHashtags}</p>
                     )}
