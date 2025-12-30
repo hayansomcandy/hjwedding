@@ -1,30 +1,39 @@
 import React, { useState, useEffect } from 'react';
 
+import { database } from '../firebase';
+import { ref, onValue } from "firebase/database";
+
 const Calendar = () => {
     // Default target: 2026-11-21
     const [targetDate, setTargetDate] = useState(new Date(2026, 10, 21)); // Month is 0-indexed (10 = Nov)
     const [timeText, setTimeText] = useState("오후 4시 40분");
 
     useEffect(() => {
-        const saved = JSON.parse(localStorage.getItem('wedding_info'));
-        if (saved && saved.date) {
-            // Try to parse "2026년 11월 21일 ..." string
-            // This is a simple regex for the format we are using
-            const match = saved.date.match(/(\d{4})년\s(\d{1,2})월\s(\d{1,2})일/);
-            if (match) {
-                const year = parseInt(match[1]);
-                const month = parseInt(match[2]) - 1;
-                const day = parseInt(match[3]);
-                setTargetDate(new Date(year, month, day));
-            }
+        const infoRef = ref(database, 'wedding_info');
+        onValue(infoRef, (snapshot) => {
+            const saved = snapshot.val();
+            if (saved && saved.date) {
+                // Parse "2026. 11. 21" or "2026년 11월 21일"
+                // Match 4 digits, then 1-2 digits, then 1-2 digits
+                const numbers = saved.date.match(/(\d{4})[.년]\s*(\d{1,2})[.월]\s*(\d{1,2})/);
+                if (numbers) {
+                    const year = parseInt(numbers[1]);
+                    const month = parseInt(numbers[2]) - 1;
+                    const day = parseInt(numbers[3]);
+                    setTargetDate(new Date(year, month, day));
+                }
 
-            // Extract time part if possible, or just use what comes after the date
-            // Assuming format "YYYY년 M월 D일 X요일 TIME"
-            const timeMatch = saved.date.split('요일');
-            if (timeMatch.length > 1 && timeMatch[1].trim()) {
-                setTimeText(timeMatch[1].trim());
+                // Extract time part
+                // Check for "오후" or "오전" + time
+                if (saved.date.includes('오후') || saved.date.includes('오전')) {
+                    // Simple split by space to find time part effectively might be hard, 
+                    // so let's just grab everything after the date part if possible, 
+                    // or just look for the "오후/오전" part
+                    const timePart = saved.date.substring(saved.date.indexOf('오')); // Starts with '오' (오후/오전)
+                    if (timePart) setTimeText(timePart);
+                }
             }
-        }
+        });
     }, []);
 
     const year = targetDate.getFullYear();
