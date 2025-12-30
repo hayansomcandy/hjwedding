@@ -52,6 +52,15 @@ const Admin = () => {
         const infoRef = ref(database, 'wedding_info');
         const designRef = ref(database, 'wedding_design');
         const accountsRef = ref(database, 'wedding_accounts');
+        const connectedRef = ref(database, '.info/connected');
+
+        onValue(connectedRef, (snap) => {
+            if (snap.val() === true) {
+                console.log("connected");
+            } else {
+                console.log("not connected");
+            }
+        });
 
         onValue(guestsRef, (snapshot) => {
             const data = snapshot.val();
@@ -220,7 +229,12 @@ const Admin = () => {
         <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto', paddingBottom: '100px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h2>관리자 모드</h2>
-                <a href="/" className="btn">{'< 메인으로'}</a>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <span style={{ fontSize: '12px', padding: '5px 10px', borderRadius: '15px', backgroundColor: '#e0ffe0', color: '#006600', border: '1px solid #00cc00' }}>
+                        🟢 서버 연결됨
+                    </span>
+                    <a href="/" className="btn">{'< 메인으로'}</a>
+                </div>
             </div>
 
             {/* Design Section */}
