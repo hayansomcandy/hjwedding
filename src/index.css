@@ -16,15 +16,24 @@ body {
 
 #root {
   width: 100%;
-  max-width: 430px; /* Mobile width */
+  max-width: 430px;
+  /* Mobile width */
   background-color: white;
   min-height: 100vh;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
-h1, h2, h3 { color: var(--primary-color); }
-p { color: #555; line-height: 1.6; }
+h1,
+h2,
+h3 {
+  color: var(--primary-color);
+}
+
+p {
+  color: #555;
+  line-height: 1.6;
+}
 
 .section {
   padding: 40px 20px;
@@ -47,11 +56,21 @@ p { color: #555; line-height: 1.6; }
   background-color: var(--point-color);
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   width: 100%;
   padding: 10px;
   margin: 5px 0 15px;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
+}
+
+input[type=range] {
+  padding: 0;
+  border: none;
+  height: 40px;
+  /* Touch target size */
+  background: transparent;
 }
