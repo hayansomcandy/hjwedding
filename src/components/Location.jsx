@@ -6,7 +6,10 @@ import React, { useState, useEffect } from 'react';
 const Location = () => {
     const [location, setLocation] = useState({
         name: '그랜드 하우스',
-        address: '인천광역시 미추홀구 주안로 103-18'
+        address: '인천광역시 미추홀구 주안로 103-18',
+        trafficSubway: '1호선 주안역 1번 출구 도보 3분',
+        trafficBus: '주안역 환승센터 하차',
+        trafficParking: '건물 내 지하주차장 이용 (2시간 무료)'
     });
 
     useEffect(() => {

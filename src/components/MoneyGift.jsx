@@ -6,8 +6,8 @@ const MoneyGift = () => {
 
     // State for accounts
     const [accounts, setAccounts] = useState({
-        groom: [{ bank: '국민은행', accountNumber: '123-456789-12-345', name: '임진오' }],
-        bride: [{ bank: '우리은행', accountNumber: '1002-123-456789', name: '신하솜' }]
+        groom: [{ bank: '국민은행', accountNumber: '123-456789-12-345', name: '임진오', relation: 'me' }],
+        bride: [{ bank: '우리은행', accountNumber: '1002-123-456789', name: '신하솜', relation: 'me' }]
     });
 
     // Load accounts on mount
