@@ -6,7 +6,7 @@ const Hero = () => {
     const [info, setInfo] = useState({
         groomName: '임진오',
         brideName: '신하솜',
-        date: '2026년 2월 8일 일요일',
+        date: '2026. 11. 21.(토)',
         message: '"저희 두 사람, \n사랑으로 하나 되어 시작합니다"'
     });
 

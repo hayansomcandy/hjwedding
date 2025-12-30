@@ -16,7 +16,7 @@ const Admin = () => {
     const [info, setInfo] = useState({
         groomName: '임진오',
         brideName: '신하솜',
-        date: '2026년 11월 21일 토요일 오후 4시 40분',
+        date: '2026. 11. 21.(토) 오후 4시 40분',
         message: '"저희 두 사람, \n사랑으로 하나 되어 시작합니다."',
         locationName: '그랜드 하우스',
         locationAddress: '인천광역시 미추홀구 주안로 103-18',
@@ -310,7 +310,7 @@ const Admin = () => {
                     <input name="brideName" value={info.brideName} onChange={handleInfoChange} />
 
                     <label>날짜/시간 (표시용)</label>
-                    <input name="date" value={info.date} onChange={handleInfoChange} placeholder="예: 2026년 2월 8일 토요일 오후 1시" />
+                    <input name="date" value={info.date} onChange={handleInfoChange} placeholder="예: 2026. 11. 21.(토) 오후 4시 40분" />
 
                     <label>예식장 이름</label>
                     <input name="locationName" value={info.locationName || ''} onChange={handleInfoChange} placeholder="예: 그랜드하우스" />
