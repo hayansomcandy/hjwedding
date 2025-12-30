@@ -500,8 +500,9 @@ const Admin = () => {
 
             {/* Profile/Introduction Section */}
             <section style={{ marginTop: '20px' }}>
-                <h3>0.5 신랑 & 신부 소개 프로필</h3>
-                <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', border: '1px solid #eee' }}>
+                <h3>✅ 신랑 & 신부 프로필 설정 (NEW)</h3>
+                <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', border: '1px solid #ff9090' }}>
+                    <p style={{ fontSize: '12px', color: '#d77', marginBottom: '15px' }}>* 새로 추가된 기능입니다. 신랑/신부님의 사진과 소개글을 입력해주세요.</p>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                         {/* Groom Profile */}
