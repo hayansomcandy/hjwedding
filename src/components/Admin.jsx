@@ -28,7 +28,13 @@ const Admin = () => {
         heroFontFamily: '',
         shareTitle: '임진오&신하솜의 결혼식 초대장',
         shareDesc: '2026년 11월 21일, 소중한 분들을 초대합니다.',
-        shareImage: ''
+        shareImage: '',
+        groomImage: '',
+        brideImage: '',
+        groomIntro: '축구를 사랑하는..\n따뜻한 남자 000입니다.',
+        brideIntro: '여행을 좋아하는..\n사랑스러운 여자 000입니다.',
+        groomHashtags: '#축구 #개발자 #ISFJ',
+        brideHashtags: '#여행 #디자이너 #ENFP'
     });
 
     // Design State
@@ -487,6 +493,79 @@ const Admin = () => {
                     </div>
 
                     <button onClick={saveInfo} className="btn btn-point" style={{ marginTop: '10px' }}>정보 저장하기</button>
+                </div>
+            </section>
+
+            <hr style={{ margin: '40px 0', border: '0', borderTop: '1px dashed #ccc' }} />
+
+            {/* Profile/Introduction Section */}
+            <section style={{ marginTop: '20px' }}>
+                <h3>0.5 신랑 & 신부 소개 프로필</h3>
+                <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '8px', border: '1px solid #eee' }}>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                        {/* Groom Profile */}
+                        <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+                            <h4 style={{ marginBottom: '10px', color: '#555' }}>🤵 신랑 ({info.groomName})</h4>
+
+                            <label>프로필 사진</label>
+                            <div style={{ marginBottom: '10px' }}>
+                                {info.groomImage && <img src={info.groomImage} alt="Groom" style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '50%', display: 'block', marginBottom: '5px' }} />}
+                                <div style={{ display: 'flex', gap: '5px' }}>
+                                    <input name="groomImage" value={info.groomImage || ''} onChange={handleInfoChange} placeholder="이미지 URL" style={{ flex: 1, minWidth: 0 }} />
+                                    <label className="btn" style={{ padding: '5px 10px', margin: 0, fontSize: '12px', cursor: 'pointer', backgroundColor: '#666' }}>
+                                        파일
+                                        <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => {
+                                            const file = e.target.files[0];
+                                            if (file) {
+                                                const reader = new FileReader();
+                                                reader.onloadend = () => setInfo(prev => ({ ...prev, groomImage: reader.result }));
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }} />
+                                    </label>
+                                </div>
+                            </div>
+
+                            <label>해시태그 (예: #멋짐)</label>
+                            <input name="groomHashtags" value={info.groomHashtags || ''} onChange={handleInfoChange} placeholder="#... #..." />
+
+                            <label>소개글 (줄바꿈 가능)</label>
+                            <textarea name="groomIntro" value={info.groomIntro || ''} onChange={handleInfoChange} rows={3} style={{ width: '100%' }} placeholder="소개글 입력" />
+                        </div>
+
+                        {/* Bride Profile */}
+                        <div style={{ padding: '10px', backgroundColor: '#fff0f0', borderRadius: '8px' }}>
+                            <h4 style={{ marginBottom: '10px', color: '#d77' }}>👰 신부 ({info.brideName})</h4>
+
+                            <label>프로필 사진</label>
+                            <div style={{ marginBottom: '10px' }}>
+                                {info.brideImage && <img src={info.brideImage} alt="Bride" style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '50%', display: 'block', marginBottom: '5px' }} />}
+                                <div style={{ display: 'flex', gap: '5px' }}>
+                                    <input name="brideImage" value={info.brideImage || ''} onChange={handleInfoChange} placeholder="이미지 URL" style={{ flex: 1, minWidth: 0 }} />
+                                    <label className="btn" style={{ padding: '5px 10px', margin: 0, fontSize: '12px', cursor: 'pointer', backgroundColor: '#666' }}>
+                                        파일
+                                        <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => {
+                                            const file = e.target.files[0];
+                                            if (file) {
+                                                const reader = new FileReader();
+                                                reader.onloadend = () => setInfo(prev => ({ ...prev, brideImage: reader.result }));
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }} />
+                                    </label>
+                                </div>
+                            </div>
+
+                            <label>해시태그 (예: #예쁨)</label>
+                            <input name="brideHashtags" value={info.brideHashtags || ''} onChange={handleInfoChange} placeholder="#... #..." />
+
+                            <label>소개글 (줄바꿈 가능)</label>
+                            <textarea name="brideIntro" value={info.brideIntro || ''} onChange={handleInfoChange} rows={3} style={{ width: '100%' }} placeholder="소개글 입력" />
+                        </div>
+                    </div>
+
+                    <button onClick={saveInfo} className="btn btn-point" style={{ marginTop: '15px' }}>프로필 저장하기</button>
                 </div>
             </section>
 

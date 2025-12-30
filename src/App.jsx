@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Hero from './components/Hero';
+import Profiles from './components/Profiles';
 import Location from './components/Location';
 import RSVP from './components/RSVP';
 import Admin from './components/Admin';
