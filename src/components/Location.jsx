@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
-// Note: To use Kakao Maps, you must provide your JavaScript Key in the script tag in index.html
-// or use the SDK's Provider. For simplicity of the layout, we show the structure.
+import { database } from '../firebase';
+import { ref, onValue } from "firebase/database";
 
 const Location = () => {
     const [location, setLocation] = useState({
@@ -13,20 +12,23 @@ const Location = () => {
     });
 
     useEffect(() => {
-        const saved = JSON.parse(localStorage.getItem('wedding_info'));
-        if (saved) {
-            setLocation({
-                name: saved.locationName || '그랜드하우스',
-                address: saved.locationAddress || '상세 주소를 입력해주세요',
-                mapImage: saved.mapImage,
-                linkTmap: saved.linkTmap,
-                linkKakao: saved.linkKakao,
-                linkNaver: saved.linkNaver,
-                trafficSubway: saved.trafficSubway,
-                trafficBus: saved.trafficBus,
-                trafficParking: saved.trafficParking
-            });
-        }
+        const infoRef = ref(database, 'wedding_info');
+        onValue(infoRef, (snapshot) => {
+            const saved = snapshot.val();
+            if (saved) {
+                setLocation({
+                    name: saved.locationName || '그랜드하우스',
+                    address: saved.locationAddress || '상세 주소를 입력해주세요',
+                    mapImage: saved.mapImage,
+                    linkTmap: saved.linkTmap,
+                    linkKakao: saved.linkKakao,
+                    linkNaver: saved.linkNaver,
+                    trafficSubway: saved.trafficSubway,
+                    trafficBus: saved.trafficBus,
+                    trafficParking: saved.trafficParking
+                });
+            }
+        });
     }, []);
 
     return (

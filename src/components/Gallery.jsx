@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import { database } from '../firebase';
+import { ref, onValue } from "firebase/database";
 
 const Gallery = () => {
     const [images, setImages] = useState([]);
 
     useEffect(() => {
-        // Load images from LocalStorage or use defaults
-        const saved = JSON.parse(localStorage.getItem('gallery_images') || '[]');
-        if (saved.length === 0) {
-            // Default placeholders if empty
-            const defaults = [
-                'https://via.placeholder.com/300x300?text=Photo+1',
-                'https://via.placeholder.com/300x300?text=Photo+2',
-                'https://via.placeholder.com/300x300?text=Photo+3',
-                'https://via.placeholder.com/300x300?text=Photo+4',
-            ];
-            // We don't save defaults to LS automatically to allow "empty" state if desired, 
-            // but for display we show them.
-            setImages(defaults);
-        } else {
-            setImages(saved);
-        }
+        const galleryRef = ref(database, 'gallery_images');
+        onValue(galleryRef, (snapshot) => {
+            const saved = snapshot.val();
+            if (!saved || saved.length === 0) {
+                // Default placeholders if empty
+                const defaults = [
+                    'https://via.placeholder.com/300x300?text=Photo+1',
+                    'https://via.placeholder.com/300x300?text=Photo+2',
+                    'https://via.placeholder.com/300x300?text=Photo+3',
+                    'https://via.placeholder.com/300x300?text=Photo+4',
+                ];
+                setImages(defaults);
+            } else {
+                setImages(saved);
+            }
+        });
     }, []);
 
     if (images.length === 0) return null;

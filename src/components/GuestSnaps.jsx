@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { database } from '../firebase';
+import { ref, onValue, set } from "firebase/database";
 
 const GuestSnaps = () => {
     const [snaps, setSnaps] = useState([]);
 
     useEffect(() => {
-        const saved = JSON.parse(localStorage.getItem('guest_snaps') || '[]');
-        setSnaps(saved);
+        const snapsRef = ref(database, 'guest_snaps');
+        onValue(snapsRef, (snapshot) => {
+            const saved = snapshot.val();
+            setSnaps(saved || []);
+        });
     }, []);
 
     const handleUpload = (e) => {
@@ -27,13 +32,9 @@ const GuestSnaps = () => {
             };
             const updated = [newSnap, ...snaps];
 
-            try {
-                localStorage.setItem('guest_snaps', JSON.stringify(updated));
-                setSnaps(updated);
-                alert('소중한 사진이 공유되었습니다!');
-            } catch (err) {
-                alert('저장 공간이 부족하여 업로드할 수 없습니다.');
-            }
+            set(ref(database, 'guest_snaps'), updated)
+                .then(() => alert('소중한 사진이 공유되었습니다!'))
+                .catch(err => alert('업로드 실패: ' + err.message));
         };
         reader.readAsDataURL(file);
     };

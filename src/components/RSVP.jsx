@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { database } from '../firebase';
+import { ref, onValue, set } from "firebase/database";
 
 const RSVP = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
     const [checkStep, setCheckStep] = useState(true); // For edit mode: true=check phone, false=edit form
     const [checkMethod, setCheckMethod] = useState('name'); // 'name' or 'phone'
+    const [guests, setGuests] = useState([]); // Store guests from DB
 
     // Form Data
     const [formData, setFormData] = useState({
@@ -19,19 +22,30 @@ const RSVP = () => {
     const [info, setInfo] = useState({});
 
     useEffect(() => {
-        const savedInfo = JSON.parse(localStorage.getItem('wedding_info'));
-        if (savedInfo) setInfo(savedInfo);
-        else {
-            // Fallback if not yet saved in LS
-            setInfo({
-                groomName: '임진오',
-                brideName: '신하솜',
-                date: '2026년 11월 21일 토요일 오후 4시 40분',
-                locationName: '그랜드 하우스',
-                locationAddress: '인천광역시 미추홀구 주안로 103-18'
-            });
-        }
-    }, [isOpen]);
+        // Listen to Guests
+        const guestsRef = ref(database, 'guests');
+        onValue(guestsRef, (snapshot) => {
+            const data = snapshot.val();
+            setGuests(data || []);
+        });
+
+        // Listen to Info
+        const infoRef = ref(database, 'wedding_info');
+        onValue(infoRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) setInfo(data);
+            else {
+                // Fallback
+                setInfo({
+                    groomName: '임진오',
+                    brideName: '신하솜',
+                    date: '2026년 11월 21일 토요일 오후 4시 40분',
+                    locationName: '그랜드 하우스',
+                    locationAddress: '인천광역시 미추홀구 주안로 103-18'
+                });
+            }
+        });
+    }, []);
 
     const openModal = (mode = 'new') => {
         setIsEditMode(mode === 'edit');
@@ -66,26 +80,27 @@ const RSVP = () => {
             return;
         }
 
-        const existingGuests = JSON.parse(localStorage.getItem('guests') || '[]');
-
         // Simple duplicate check for new entries
         if (!isEditMode) {
-            const duplicate = existingGuests.find(g => g.name === formData.name && g.phone === formData.phone);
+            const duplicate = guests.find(g => g.name === formData.name && g.phone === formData.phone);
             if (duplicate) {
                 alert('이미 등록된 정보가 있습니다. "수정하기"를 이용해주세요.');
                 return;
             }
             const newGuest = { ...formData, id: Date.now(), date: new Date().toLocaleString() };
-            localStorage.setItem('guests', JSON.stringify([...existingGuests, newGuest]));
-            alert('참석 여부가 전달되었습니다. 감사합니다!');
+            const updatedGuests = [...guests, newGuest];
+
+            set(ref(database, 'guests'), updatedGuests)
+                .then(() => alert('참석 여부가 전달되었습니다. 감사합니다!'))
+                .catch(err => alert('오류가 발생했습니다: ' + err.message));
         } else {
             // Update logic
-            // We match by ID since we found them in the check step
-            const updatedGuests = existingGuests.map(g =>
+            const updatedGuests = guests.map(g =>
                 g.id === formData.id ? { ...g, ...formData, date: new Date().toLocaleString() } : g
             );
-            localStorage.setItem('guests', JSON.stringify(updatedGuests));
-            alert('참석 정보가 수정되었습니다.');
+            set(ref(database, 'guests'), updatedGuests)
+                .then(() => alert('참석 정보가 수정되었습니다.'))
+                .catch(err => alert('수정 실패: ' + err.message));
         }
 
         closeModal();
@@ -93,7 +108,6 @@ const RSVP = () => {
 
     // Handle "Check" for edit mode
     const handleCheck = () => {
-        const existingGuests = JSON.parse(localStorage.getItem('guests') || '[]');
         let guest = null;
 
         if (checkMethod === 'name') {
@@ -101,13 +115,13 @@ const RSVP = () => {
                 alert('이름을 입력해주세요.');
                 return;
             }
-            guest = existingGuests.find(g => g.name === formData.name);
+            guest = guests.find(g => g.name === formData.name);
         } else {
             if (!formData.phone) {
                 alert('연락처를 입력해주세요.');
                 return;
             }
-            guest = existingGuests.find(g => g.phone === formData.phone);
+            guest = guests.find(g => g.phone === formData.phone);
         }
 
         if (guest) {
@@ -254,11 +268,13 @@ const RSVP = () => {
                                     type="button"
                                     onClick={() => {
                                         if (window.confirm('정말 참석 내역을 삭제하시겠습니까?')) {
-                                            const existingGuests = JSON.parse(localStorage.getItem('guests') || '[]');
-                                            const updatedGuests = existingGuests.filter(g => g.id !== formData.id);
-                                            localStorage.setItem('guests', JSON.stringify(updatedGuests));
-                                            alert('삭제되었습니다.');
-                                            closeModal();
+                                            const updatedGuests = guests.filter(g => g.id !== formData.id);
+                                            set(ref(database, 'guests'), updatedGuests)
+                                                .then(() => {
+                                                    alert('삭제되었습니다.');
+                                                    closeModal();
+                                                })
+                                                .catch(err => alert('삭제 실패: ' + err.message));
                                         }
                                     }}
                                     className="btn"

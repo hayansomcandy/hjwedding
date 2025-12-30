@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { database } from '../firebase';
+import { ref, onValue } from "firebase/database";
 
 const MoneyGift = () => {
     // Accordion state
@@ -11,11 +13,12 @@ const MoneyGift = () => {
     });
 
     // Load accounts on mount
-    React.useEffect(() => {
-        const saved = JSON.parse(localStorage.getItem('wedding_accounts'));
-        if (saved) {
-            setAccounts(saved);
-        }
+    useEffect(() => {
+        const accountsRef = ref(database, 'wedding_accounts');
+        onValue(accountsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) setAccounts(data);
+        });
     }, []);
 
     const toggle = (side) => {
