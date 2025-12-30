@@ -63,6 +63,7 @@ const Hero = () => {
                     fontSize: `${info.heroTitleFontSize || 32}px`,
                     marginBottom: '15px',
                     fontWeight: 'bold',
+                    color: info.heroTextColor || '#333',
                     fontFamily: info.heroFontFamily || 'inherit'
                 }}>
                     {info.groomName} <span style={{ fontSize: `${(info.heroTitleFontSize || 32) * 0.75}px`, fontWeight: 'normal' }}>&</span> {info.brideName}
