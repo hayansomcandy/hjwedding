@@ -312,6 +312,20 @@ const Admin = () => {
                     <label>예식장 이름</label>
                     <input name="locationName" value={info.locationName || ''} onChange={handleInfoChange} placeholder="예: 그랜드하우스" />
 
+                    <div style={{ backgroundColor: '#f0f0f0', padding: '10px', borderRadius: '4px', marginBottom: '15px' }}>
+                        <label style={{ display: 'block', marginBottom: '5px' }}><strong>배경 투명도 조절</strong> ({info.mainImageOpacity || 0.6})</label>
+                        <input
+                            type="range"
+                            name="mainImageOpacity"
+                            min="0.1"
+                            max="1.0"
+                            step="0.1"
+                            value={info.mainImageOpacity || 0.6}
+                            onChange={handleInfoChange}
+                            style={{ width: '100%', cursor: 'pointer', accentColor: '#333' }}
+                        />
+                    </div>
+
                     <label>메인 사진 (배경)</label>
                     <div style={{ marginBottom: '10px' }}>
                         {info.mainImage && <img src={info.mainImage} alt="Main Preview" style={{ width: '100%', maxWidth: '200px', display: 'block', marginBottom: '5px', opacity: info.mainImageOpacity || 0.6 }} />}
@@ -337,20 +351,6 @@ const Admin = () => {
                                 }} />
                             </label>
                         </div>
-                    </div>
-
-                    <label>배경 투명도 ({info.mainImageOpacity || 0.6})</label>
-                    <div style={{ marginBottom: '15px' }}>
-                        <input
-                            type="range"
-                            name="mainImageOpacity"
-                            min="0.1"
-                            max="1.0"
-                            step="0.1"
-                            value={info.mainImageOpacity || 0.6}
-                            onChange={handleInfoChange}
-                            style={{ width: '100%', margin: '5px 0', padding: 0, display: 'block' }}
-                        />
                     </div>
 
                     <label style={{ display: 'block', marginTop: '15px', color: '#555', borderBottom: '1px solid #eee', paddingBottom: '5px' }}><strong>메인 텍스트 스타일</strong></label>
