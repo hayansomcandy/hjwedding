@@ -67,6 +67,7 @@ function App() {
             ) : (
                 <div className="app-container">
                     <Hero />
+                    <Profiles />
                     <Gallery />
                     <Calendar />
                     <Location />
