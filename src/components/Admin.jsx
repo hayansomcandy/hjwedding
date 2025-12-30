@@ -353,46 +353,48 @@ const Admin = () => {
                         </div>
                     </div>
 
-                    <label style={{ display: 'block', marginTop: '15px', color: '#555', borderBottom: '1px solid #eee', paddingBottom: '5px' }}><strong>메인 텍스트 스타일</strong></label>
+                    <div style={{ marginTop: '30px', paddingTop: '20px', borderTop: '2px dashed #ddd' }}>
+                        <h4 style={{ marginBottom: '15px', color: '#333' }}>메인 텍스트 스타일 설정</h4>
 
-                    <label>글자 색상</label>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                        <input
-                            type="color"
-                            name="heroTextColor"
-                            value={info.heroTextColor && info.heroTextColor.startsWith('#') ? info.heroTextColor : '#333333'}
-                            onChange={handleInfoChange}
-                        />
-                        <input
-                            type="text"
-                            name="heroTextColor"
-                            value={info.heroTextColor || '#333333'}
-                            onChange={handleInfoChange}
-                            style={{ width: '100px', margin: 0, padding: '5px' }}
-                            placeholder="#333333 or RGB"
-                        />
+                        <label>글자 색상</label>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                            <input
+                                type="color"
+                                name="heroTextColor"
+                                value={info.heroTextColor && info.heroTextColor.startsWith('#') ? info.heroTextColor : '#333333'}
+                                onChange={handleInfoChange}
+                            />
+                            <input
+                                type="text"
+                                name="heroTextColor"
+                                value={info.heroTextColor || '#333333'}
+                                onChange={handleInfoChange}
+                                style={{ width: '100px', margin: 0, padding: '5px' }}
+                                placeholder="#333333 or RGB"
+                            />
+                        </div>
+
+                        <label>메인 폰트 (선택 안 하면 기본값)</label>
+                        <select name="heroFontFamily" value={info.heroFontFamily || ''} onChange={handleInfoChange} style={{ marginBottom: '10px' }}>
+                            <option value="">기본 폰트 사용</option>
+                            <option value="'Nanum Myeongjo', serif">나눔 명조 (클래식)</option>
+                            <option value="'Gowun Dodum', sans-serif">고운 돋움 (부드러운)</option>
+                            <option value="'Sunflower', sans-serif">선플라워 (귀여운)</option>
+                            <option value="'Black Han Sans', sans-serif">검은고딕 (굵은)</option>
+                            <option value="'Pinyon Script', cursive">영문 필기체 (Pinyon)</option>
+                        </select>
+
+                        <label>이름 크기 ({info.heroTitleFontSize || 32}px)</label>
+                        <input type="range" name="heroTitleFontSize" min="20" max="60" value={info.heroTitleFontSize || 32} onChange={handleInfoChange} style={{ width: '100%' }} />
+
+                        <label>날짜 크기 ({info.heroDateFontSize || 18}px)</label>
+                        <input type="range" name="heroDateFontSize" min="12" max="30" value={info.heroDateFontSize || 18} onChange={handleInfoChange} style={{ width: '100%' }} />
+
+                        <label>문구 크기 ({info.heroMessageFontSize || 16}px)</label>
+                        <input type="range" name="heroMessageFontSize" min="12" max="24" value={info.heroMessageFontSize || 16} onChange={handleInfoChange} style={{ width: '100%' }} />
                     </div>
 
-                    <label>메인 폰트 (선택 안 하면 기본값)</label>
-                    <select name="heroFontFamily" value={info.heroFontFamily || ''} onChange={handleInfoChange} style={{ marginBottom: '10px' }}>
-                        <option value="">기본 폰트 사용</option>
-                        <option value="'Nanum Myeongjo', serif">나눔 명조 (클래식)</option>
-                        <option value="'Gowun Dodum', sans-serif">고운 돋움 (부드러운)</option>
-                        <option value="'Sunflower', sans-serif">선플라워 (귀여운)</option>
-                        <option value="'Black Han Sans', sans-serif">검은고딕 (굵은)</option>
-                        <option value="'Pinyon Script', cursive">영문 필기체 (Pinyon)</option>
-                    </select>
-
-                    <label>이름 크기 ({info.heroTitleFontSize || 32}px)</label>
-                    <input type="range" name="heroTitleFontSize" min="20" max="60" value={info.heroTitleFontSize || 32} onChange={handleInfoChange} style={{ width: '100%' }} />
-
-                    <label>날짜 크기 ({info.heroDateFontSize || 18}px)</label>
-                    <input type="range" name="heroDateFontSize" min="12" max="30" value={info.heroDateFontSize || 18} onChange={handleInfoChange} style={{ width: '100%' }} />
-
-                    <label>문구 크기 ({info.heroMessageFontSize || 16}px)</label>
-                    <input type="range" name="heroMessageFontSize" min="12" max="24" value={info.heroMessageFontSize || 16} onChange={handleInfoChange} style={{ width: '100%' }} />
-
-                    <label>주소</label>
+                    <label style={{ marginTop: '20px', display: 'block' }}>주소</label>
                     <input name="locationAddress" value={info.locationAddress || ''} onChange={handleInfoChange} placeholder="예: 서울 강남구..." />
 
                     <label>약도/지도 이미지</label>
