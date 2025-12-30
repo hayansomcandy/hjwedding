@@ -353,7 +353,7 @@ const Admin = () => {
                         </div>
                     </div>
 
-                    <div style={{ marginTop: '30px', paddingTop: '20px', borderTop: '2px dashed #ddd' }}>
+                    <div style={{ marginTop: '30px', paddingTop: '20px', borderTop: '2px solid #eee', position: 'relative', zIndex: 10, backgroundColor: '#fff' }}>
                         <h4 style={{ marginBottom: '15px', color: '#333' }}>메인 텍스트 스타일 설정</h4>
 
                         <label>글자 색상</label>
