@@ -309,8 +309,9 @@ const Admin = () => {
                     <label>신부 이름</label>
                     <input name="brideName" value={info.brideName} onChange={handleInfoChange} />
 
-                    <label>날짜/시간 (표시용)</label>
-                    <input name="date" value={info.date} onChange={handleInfoChange} placeholder="예: 2026. 11. 21.(토) 오후 4시 40분" />
+                    <label style={{ color: '#0066cc', fontWeight: 'bold' }}>📅 날짜/시간 (메인 화면 표시용)</label>
+                    <p style={{ fontSize: '12px', color: '#666', marginBottom: '5px' }}>* 이곳의 텍스트를 원하시는 형식(예: 2026. 11. 21.(토))으로 직접 수정해주세요.</p>
+                    <input name="date" value={info.date} onChange={handleInfoChange} placeholder="예: 2026. 11. 21.(토) 오후 4시 40분" style={{ border: '2px solid #cce5ff' }} />
 
                     <label>예식장 이름</label>
                     <input name="locationName" value={info.locationName || ''} onChange={handleInfoChange} placeholder="예: 그랜드하우스" />
