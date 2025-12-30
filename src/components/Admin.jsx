@@ -36,7 +36,9 @@ const Admin = () => {
         groomHashtags: '#축구 #개발자 #ISFJ',
         brideHashtags: '#여행 #디자이너 #ENFP',
         groomBirth: '1993. 02. 04.',
-        brideBirth: '1998. 01. 18.'
+        brideBirth: '1998. 01. 18.',
+        groomRegion: '인천광역시 미추홀구',
+        brideRegion: '경기도 부천시'
     });
 
     // Design State
@@ -533,6 +535,9 @@ const Admin = () => {
                             <label>생년월일 (예: 1993. 02. 04.)</label>
                             <input name="groomBirth" value={info.groomBirth || ''} onChange={handleInfoChange} placeholder="1993. 02. 04." />
 
+                            <label>지역 (예: 인천광역시 미추홀구)</label>
+                            <input name="groomRegion" value={info.groomRegion || ''} onChange={handleInfoChange} placeholder="지역 입력" />
+
                             <label>해시태그 (예: #멋짐)</label>
                             <input name="groomHashtags" value={info.groomHashtags || ''} onChange={handleInfoChange} placeholder="#... #..." />
 
@@ -565,6 +570,9 @@ const Admin = () => {
 
                             <label>생년월일 (예: 1998. 01. 18.)</label>
                             <input name="brideBirth" value={info.brideBirth || ''} onChange={handleInfoChange} placeholder="1998. 01. 18." />
+
+                            <label>지역 (예: 경기도 부천시)</label>
+                            <input name="brideRegion" value={info.brideRegion || ''} onChange={handleInfoChange} placeholder="지역 입력" />
 
                             <label>해시태그 (예: #예쁨)</label>
                             <input name="brideHashtags" value={info.brideHashtags || ''} onChange={handleInfoChange} placeholder="#... #..." />

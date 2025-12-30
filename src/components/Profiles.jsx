@@ -58,6 +58,9 @@ const Profiles = () => {
                     {info.groomBirth && (
                         <p style={{ color: '#666', fontSize: '14px', marginBottom: '5px' }}>{info.groomBirth}</p>
                     )}
+                    {info.groomRegion && (
+                        <p style={{ color: '#666', fontSize: '14px', marginBottom: '5px' }}>{info.groomRegion}</p>
+                    )}
                     {info.groomHashtags && (
                         <p style={{ color: '#0066cc', fontSize: '14px', marginBottom: '10px', wordBreak: 'keep-all' }}>{info.groomHashtags}</p>
                     )}
@@ -97,6 +100,9 @@ const Profiles = () => {
                     </div>
                     {info.brideBirth && (
                         <p style={{ color: '#666', fontSize: '14px', marginBottom: '5px' }}>{info.brideBirth}</p>
+                    )}
+                    {info.brideRegion && (
+                        <p style={{ color: '#666', fontSize: '14px', marginBottom: '5px' }}>{info.brideRegion}</p>
                     )}
                     {info.brideHashtags && (
                         <p style={{ color: '#ff6699', fontSize: '14px', marginBottom: '10px', wordBreak: 'keep-all' }}>{info.brideHashtags}</p>
