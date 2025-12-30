@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
+import { database } from '../firebase';
+import { ref, onValue, set } from "firebase/database";
 
 const Admin = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -44,25 +46,37 @@ const Admin = () => {
     });
 
     useEffect(() => {
-        // Load Guests
-        const guestData = JSON.parse(localStorage.getItem('guests') || '[]');
-        setGuests(guestData);
+        // Real-time Listeners
+        const guestsRef = ref(database, 'guests');
+        const galleryRef = ref(database, 'gallery_images');
+        const infoRef = ref(database, 'wedding_info');
+        const designRef = ref(database, 'wedding_design');
+        const accountsRef = ref(database, 'wedding_accounts');
 
-        // Load Images
-        const imageData = JSON.parse(localStorage.getItem('gallery_images') || '[]');
-        setImages(imageData);
+        onValue(guestsRef, (snapshot) => {
+            const data = snapshot.val();
+            setGuests(data || []);
+        });
 
-        // Load Info
-        const infoData = JSON.parse(localStorage.getItem('wedding_info'));
-        if (infoData) setInfo(infoData);
+        onValue(galleryRef, (snapshot) => {
+            const data = snapshot.val();
+            setImages(data || []);
+        });
 
-        // Load Design
-        const designData = JSON.parse(localStorage.getItem('wedding_design'));
-        if (designData) setDesign(designData);
+        onValue(infoRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) setInfo(prev => ({ ...prev, ...data }));
+        });
 
-        // Load Accounts
-        const accountData = JSON.parse(localStorage.getItem('wedding_accounts'));
-        if (accountData) setAccounts(accountData);
+        onValue(designRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) setDesign(prev => ({ ...prev, ...data }));
+        });
+
+        onValue(accountsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) setAccounts(prev => ({ ...prev, ...data }));
+        });
     }, []);
 
     const handleLogin = (e) => {
@@ -81,9 +95,9 @@ const Admin = () => {
     };
 
     const saveDesign = () => {
-        localStorage.setItem('wedding_design', JSON.stringify(design));
-        alert('디자인 설정이 저장되었습니다. 메인 화면에서 새로고침하여 확인하세요.');
-        // Direct apply for preview if needed, but App.jsx should handle initial load
+        set(ref(database, 'wedding_design'), design)
+            .then(() => alert('디자인 설정이 저장되었습니다. (실시간 반영)'))
+            .catch(err => alert('저장 실패: ' + err.message));
     };
 
     // --- Info Functions ---
@@ -93,8 +107,9 @@ const Admin = () => {
     };
 
     const saveInfo = () => {
-        localStorage.setItem('wedding_info', JSON.stringify(info));
-        alert('기본 정보가 저장되었습니다.');
+        set(ref(database, 'wedding_info'), info)
+            .then(() => alert('기본 정보가 저장되었습니다. (실시간 반영)'))
+            .catch(err => alert('저장 실패: ' + err.message));
     };
 
     // --- Account Functions ---
@@ -119,8 +134,9 @@ const Admin = () => {
     };
 
     const saveAccounts = () => {
-        localStorage.setItem('wedding_accounts', JSON.stringify(accounts));
-        alert('계좌 정보가 저장되었습니다.');
+        set(ref(database, 'wedding_accounts'), accounts)
+            .then(() => alert('계좌 정보가 저장되었습니다. (실시간 반영)'))
+            .catch(err => alert('저장 실패: ' + err.message));
     };
 
     // --- RSVP Functions ---
@@ -136,9 +152,10 @@ const Admin = () => {
     };
 
     const clearData = () => {
-        if (window.confirm('모든 RSVP 데이터(명단)를 삭제하시겠습니까?')) {
-            localStorage.removeItem('guests');
-            setGuests([]);
+        if (window.confirm('모든 RSVP 데이터(명단)를 삭제하시겠습니까? 데이터베이스에서 영구 삭제됩니다.')) {
+            set(ref(database, 'guests'), [])
+                .then(() => setGuests([]))
+                .catch(err => alert('삭제 실패: ' + err.message));
         }
     }
 
@@ -147,7 +164,8 @@ const Admin = () => {
         if (!newImageUrl) return;
         const updated = [...images, newImageUrl];
         setImages(updated);
-        localStorage.setItem('gallery_images', JSON.stringify(updated));
+        set(ref(database, 'gallery_images'), updated)
+            .catch(err => alert('저장 실패: ' + err.message));
         setNewImageUrl('');
     };
 
@@ -155,7 +173,8 @@ const Admin = () => {
         if (window.confirm('이 사진을 삭제하시겠습니까?')) {
             const updated = images.filter((_, i) => i !== index);
             setImages(updated);
-            localStorage.setItem('gallery_images', JSON.stringify(updated));
+            set(ref(database, 'gallery_images'), updated)
+                .catch(err => alert('삭제 실패: ' + err.message));
         }
     };
 
@@ -163,9 +182,9 @@ const Admin = () => {
         const file = e.target.files[0];
         if (!file) return;
 
-        // Limit size to avoid LocalStorage quota exceeded (e.g., 500KB limit for demo)
+        // Limit size for Firebase Realtime Database
         if (file.size > 500 * 1024) {
-            alert('데모 환경에서는 500KB 이하의 이미지만 업로드 가능합니다.\n(실제 서비스에서는 서버 저장소를 사용해야 합니다.)');
+            alert('500KB 이하의 이미지만 업로드 가능합니다.');
             return;
         }
 
@@ -173,12 +192,9 @@ const Admin = () => {
         reader.onloadend = () => {
             const base64 = reader.result;
             const updated = [...images, base64];
-            try {
-                localStorage.setItem('gallery_images', JSON.stringify(updated));
-                setImages(updated);
-            } catch (err) {
-                alert('저장 용량이 부족합니다. 이미지 크기를 줄이거나 URL 방식을 사용해주세요.');
-            }
+            set(ref(database, 'gallery_images'), updated)
+                .then(() => setImages(updated))
+                .catch(err => alert('업로드 실패 (용량 초과 가능성): ' + err.message));
         };
         reader.readAsDataURL(file);
     }
@@ -216,14 +232,28 @@ const Admin = () => {
                             <label>메인 텍스트 색상</label>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <input type="color" name="primaryColor" value={design.primaryColor} onChange={handleDesignChange} />
-                                <span>{design.primaryColor}</span>
+                                <input
+                                    type="text"
+                                    name="primaryColor"
+                                    value={design.primaryColor}
+                                    onChange={handleDesignChange}
+                                    style={{ width: '80px', margin: 0, padding: '5px' }}
+                                    placeholder="#000000"
+                                />
                             </div>
                         </div>
                         <div>
                             <label>포인트 색상 (버튼 등)</label>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <input type="color" name="pointColor" value={design.pointColor} onChange={handleDesignChange} />
-                                <span>{design.pointColor}</span>
+                                <input
+                                    type="text"
+                                    name="pointColor"
+                                    value={design.pointColor}
+                                    onChange={handleDesignChange}
+                                    style={{ width: '80px', margin: 0, padding: '5px' }}
+                                    placeholder="#ff9090"
+                                />
                             </div>
                         </div>
                     </div>
@@ -531,17 +561,21 @@ const Admin = () => {
 
 // Sub-component for Guest Snaps Management within Admin
 const GuestSnapsManager = () => {
-    const [snaps, setSnaps] = React.useState([]); // Assuming React is imported and useState is available
+    const [snaps, setSnaps] = React.useState([]);
 
-    React.useEffect(() => { // Assuming React is imported and useEffect is available
-        setSnaps(JSON.parse(localStorage.getItem('guest_snaps') || '[]'));
+    React.useEffect(() => {
+        const snapsRef = ref(database, 'guest_snaps');
+        onValue(snapsRef, (snapshot) => {
+            const data = snapshot.val();
+            setSnaps(data || []);
+        });
     }, []);
 
     const handleDelete = (id) => {
         if (window.confirm('이 사진을 정말 삭제하시겠습니까?')) {
             const updated = snaps.filter(s => s.id !== id);
-            setSnaps(updated);
-            localStorage.setItem('guest_snaps', JSON.stringify(updated));
+            set(ref(database, 'guest_snaps'), updated)
+                .catch(err => alert('삭제 실패: ' + err.message));
         }
     };
 

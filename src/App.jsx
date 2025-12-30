@@ -6,8 +6,9 @@ import Admin from './components/Admin';
 import Gallery from './components/Gallery';
 import Calendar from './components/Calendar';
 import GuestSnaps from './components/GuestSnaps';
-
-import MoneyGift from './components/MoneyGift'; // Import
+import MoneyGift from './components/MoneyGift';
+import { database } from './firebase';
+import { ref, onValue } from "firebase/database";
 
 function App() {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -19,15 +20,18 @@ function App() {
             setIsAdmin(true);
         }
 
-        // Apply Global Design
-        const design = JSON.parse(localStorage.getItem('wedding_design'));
-        if (design) {
-            document.documentElement.style.setProperty('--primary-color', design.primaryColor || '#333');
-            document.documentElement.style.setProperty('--point-color', design.pointColor || '#ff9090');
-            if (design.fontFamily) {
-                document.body.style.fontFamily = design.fontFamily;
+        // Apply Global Design (Real-time from Firebase)
+        const designRef = ref(database, 'wedding_design');
+        onValue(designRef, (snapshot) => {
+            const design = snapshot.val();
+            if (design) {
+                document.documentElement.style.setProperty('--primary-color', design.primaryColor || '#333');
+                document.documentElement.style.setProperty('--point-color', design.pointColor || '#ff9090');
+                if (design.fontFamily) {
+                    document.body.style.fontFamily = design.fontFamily;
+                }
             }
-        }
+        });
     }, []);
 
     return (

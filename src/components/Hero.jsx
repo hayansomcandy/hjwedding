@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { database } from '../firebase';
+import { ref, onValue } from "firebase/database";
 
 const Hero = () => {
     const [info, setInfo] = useState({
         groomName: '임진오',
         brideName: '신하솜',
         date: '2026년 2월 8일 일요일',
-        message: '"저희 두 사람, \n사랑으로 하나 되어 시작합니다."'
+        message: '"저희 두 사람, \n사랑으로 하나 되어 시작합니다"'
     });
 
     useEffect(() => {
-        const saved = JSON.parse(localStorage.getItem('wedding_info'));
-        if (saved) setInfo(saved);
+        const infoRef = ref(database, 'wedding_info');
+        onValue(infoRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) setInfo(prev => ({ ...prev, ...data }));
+        });
     }, []);
 
     return (
