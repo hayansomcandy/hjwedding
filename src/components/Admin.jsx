@@ -17,7 +17,8 @@ const Admin = () => {
         date: '2026년 11월 21일 토요일 오후 4시 40분',
         message: '"저희 두 사람, \n사랑으로 하나 되어 시작합니다."',
         locationName: '그랜드 하우스',
-        locationAddress: '인천광역시 미추홀구 주안로 103-18'
+        locationAddress: '인천광역시 미추홀구 주안로 103-18',
+        mainImageOpacity: 0.6
     });
 
     // Design State
@@ -251,6 +252,48 @@ const Admin = () => {
 
                     <label>예식장 이름</label>
                     <input name="locationName" value={info.locationName || ''} onChange={handleInfoChange} placeholder="예: 그랜드하우스" />
+
+                    <label>메인 사진 (배경)</label>
+                    <div style={{ marginBottom: '10px' }}>
+                        {info.mainImage && <img src={info.mainImage} alt="Main Preview" style={{ width: '100%', maxWidth: '200px', display: 'block', marginBottom: '5px', opacity: info.mainImageOpacity || 0.6 }} />}
+                        <div style={{ display: 'flex', gap: '5px' }}>
+                            <input
+                                name="mainImage"
+                                value={info.mainImage || ''}
+                                onChange={handleInfoChange}
+                                placeholder="이미지 주소 URL"
+                                style={{ flex: 1, margin: 0 }}
+                            />
+                            <label className="btn" style={{ padding: '10px', margin: 0, fontSize: '14px', cursor: 'pointer', backgroundColor: '#666' }}>
+                                파일 선택
+                                <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => {
+                                    const file = e.target.files[0];
+                                    if (file) {
+                                        const reader = new FileReader();
+                                        reader.onloadend = () => {
+                                            setInfo(prev => ({ ...prev, mainImage: reader.result }));
+                                        };
+                                        reader.readAsDataURL(file);
+                                    }
+                                }} />
+                            </label>
+                        </div>
+                    </div>
+
+                    <label>배경 투명도 (0.1 ~ 1.0)</label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+                        <input
+                            type="range"
+                            name="mainImageOpacity"
+                            min="0.1"
+                            max="1.0"
+                            step="0.1"
+                            value={info.mainImageOpacity || 0.6}
+                            onChange={handleInfoChange}
+                            style={{ flex: 1 }}
+                        />
+                        <span>{info.mainImageOpacity || 0.6}</span>
+                    </div>
 
                     <label>주소</label>
                     <input name="locationAddress" value={info.locationAddress || ''} onChange={handleInfoChange} placeholder="예: 서울 강남구..." />
