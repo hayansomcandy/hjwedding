@@ -56,20 +56,7 @@ const Hero = () => {
                     <p style={{ whiteSpace: 'pre-line', fontSize: '16px', lineHeight: '2', color: '#333' }}>{info.message}</p>
                 </div>
 
-                <div style={{ marginTop: '20px' }}>
-                    <button className="btn" style={{ backgroundColor: 'rgba(255,255,255,0.8)', border: '1px solid #ccc', color: '#333' }} onClick={() => {
-                        if (navigator.share) {
-                            navigator.share({
-                                title: `${info.groomName} & ${info.brideName} 결혼식`,
-                                text: '저희 결혼식에 초대합니다.',
-                                url: window.location.href,
-                            });
-                        } else {
-                            navigator.clipboard.writeText(window.location.href);
-                            alert('링크가 복사되었습니다.');
-                        }
-                    }}>💌 카카오톡/링크 공유하기</button>
-                </div>
+
             </div>
         </div>
     );
