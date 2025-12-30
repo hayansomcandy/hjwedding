@@ -231,28 +231,38 @@ const Admin = () => {
                         <div>
                             <label>메인 텍스트 색상</label>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <input type="color" name="primaryColor" value={design.primaryColor} onChange={handleDesignChange} />
+                                <input
+                                    type="color"
+                                    name="primaryColor"
+                                    value={design.primaryColor.startsWith('#') ? design.primaryColor : '#000000'}
+                                    onChange={handleDesignChange}
+                                />
                                 <input
                                     type="text"
                                     name="primaryColor"
                                     value={design.primaryColor}
                                     onChange={handleDesignChange}
-                                    style={{ width: '80px', margin: 0, padding: '5px' }}
-                                    placeholder="#000000"
+                                    style={{ width: '100px', margin: 0, padding: '5px' }}
+                                    placeholder="#000000 or RGB"
                                 />
                             </div>
                         </div>
                         <div>
                             <label>포인트 색상 (버튼 등)</label>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <input type="color" name="pointColor" value={design.pointColor} onChange={handleDesignChange} />
+                                <input
+                                    type="color"
+                                    name="pointColor"
+                                    value={design.pointColor.startsWith('#') ? design.pointColor : '#ff9090'}
+                                    onChange={handleDesignChange}
+                                />
                                 <input
                                     type="text"
                                     name="pointColor"
                                     value={design.pointColor}
                                     onChange={handleDesignChange}
-                                    style={{ width: '80px', margin: 0, padding: '5px' }}
-                                    placeholder="#ff9090"
+                                    style={{ width: '100px', margin: 0, padding: '5px' }}
+                                    placeholder="#ff9090 or RGB"
                                 />
                             </div>
                         </div>
@@ -334,8 +344,20 @@ const Admin = () => {
 
                     <label>글자 색상</label>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                        <input type="color" name="heroTextColor" value={info.heroTextColor || '#333333'} onChange={handleInfoChange} />
-                        <span>{info.heroTextColor || '#333333'}</span>
+                        <input
+                            type="color"
+                            name="heroTextColor"
+                            value={info.heroTextColor && info.heroTextColor.startsWith('#') ? info.heroTextColor : '#333333'}
+                            onChange={handleInfoChange}
+                        />
+                        <input
+                            type="text"
+                            name="heroTextColor"
+                            value={info.heroTextColor || '#333333'}
+                            onChange={handleInfoChange}
+                            style={{ width: '100px', margin: 0, padding: '5px' }}
+                            placeholder="#333333 or RGB"
+                        />
                     </div>
 
                     <label>메인 폰트 (선택 안 하면 기본값)</label>
